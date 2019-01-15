@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())  # avoid "No handler found" warnings
 
 
-API_URL = "https://api.xplenty.com/%s/api/"   # %s is a placehoher for the account id
+API_URL = "https://api.xplenty.com/%s/"   # %s is a placehoher for the account id
 
 HEADERS = {
 	'Accept': 'application/vnd.xplenty+json',
