@@ -11,6 +11,7 @@ except ImportError:
     from urllib2 import urlopen, Request, HTTPError
     from urlparse import urljoin
 from dateutil.parser import parse as parse_datetime
+import requests
 
 from .exceptions import XplentyAPIException
 
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())  # avoid "No handler found" warnings
 
 
-API_URL = "https://api.xplenty.com/%s/"   # %s is a placehoher for the account id
+API_URL = "https://api.xplenty.com/%s/api/"   # %s is a placehoher for the account id
 
 HEADERS = {
 	'Accept': 'application/vnd.xplenty+json',
