@@ -10,7 +10,7 @@ class XplentyAPIException(Exception):
         try:
             self.content = json.loads(http_error.read())
             msg = self.content["message"]
-        except (ValueError, TypeError, LookupError):
+        except (ValueError, TypeError, LookupError, AttributeError):
             msg = str(http_error)
 
         super(XplentyAPIException, self).__init__(msg)

@@ -18,7 +18,6 @@ from .exceptions import XplentyAPIException
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())  # avoid "No handler found" warnings
 
-
 API_URL = "https://api.xplenty.com/%s/api/"   # %s is a placehoher for the account id
 
 HEADERS = {
@@ -277,13 +276,23 @@ class XplentyClient(object):
 
         return json.loads(resp.read())
 
+    def get(self, url):
+        logger.debug('GET {}'.format(url))
+        resp = requests.get(url, headers=HEADERS, params=self.params)
+        try:
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            raise XplentyAPIException(error)
+        
+        return resp.json()
     
     def post(self, url, data_dict={}):
         logger.debug('POST {}, data {}'.format(url, data_dict))
 
         try:
             resp = requests.post(url, data=data_dict, headers=HEADERS, params=self.params)
-        except resp.raise_for_status() as error:
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as error:
             raise XplentyAPIException(error)
         
         return resp.json()
@@ -310,7 +319,12 @@ class XplentyClient(object):
         logger.debug("DELETE {}".format(url))
 
         try:
-            resp = requests.po
+            resp = requests.delete(url, headers=HEADERS)
+        except resp.raise_for_status():
+            error = HTTPError(resp.url, resp.status_code, resp.reason)
+            XplentyAPIException(error)
+        
+        return resp.json()
 
     def _delete(self, url):
         logger.debug("DELETE %s", url)
