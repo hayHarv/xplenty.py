@@ -7,7 +7,7 @@ verify_ssl = true
 pylint = "*"
 
 [packages]
-python-dateutil = "==2.4.2"
+python-dateutil = "==2.7.5"
 xplenty = {editable = true,path = "."}
 requests = "*"
 
