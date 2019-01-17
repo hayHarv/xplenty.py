@@ -68,3 +68,4 @@ target/
 [Ss]cripts
 pyvenv.cfg
 tests.py
+.vscode/
