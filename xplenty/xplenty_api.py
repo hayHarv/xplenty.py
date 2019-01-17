@@ -259,11 +259,12 @@ class XplentyClient(object):
     def __init__(self, account_id="", api_key=""):
         self.account_id = account_id
         self.api_key = api_key
+        self.params = {'key':api_key}
 
     def __repr__(self):
         return '<Xplenty client at 0x%x>' % (id(self))
 
-    def get(self,url):
+    def _get(self,url):
         logger.debug("GET %s", url)
         request = Request(url,headers=HEADERS)
         base64string = base64.encodebytes(bytes(self.api_key, 'utf-8')).replace(b'\n', b'')
@@ -276,7 +277,18 @@ class XplentyClient(object):
 
         return json.loads(resp.read())
 
-    def post(self, url, data_dict={}):
+    def get(self, url):
+        logger.debug("GET {}".format(url))
+        
+        try:
+            resp = requests.get(url, headers=HEADERS, params=self.params)
+        except resp.raise_for_status() as error:
+            raise XplentyAPIException(error)
+
+        return resp.content.json()
+        
+
+    def _post(self, url, data_dict={}):
         encoded_data = urlencode(data_dict)
         logger.debug("POST %s, data %s", url, encoded_data)
 
