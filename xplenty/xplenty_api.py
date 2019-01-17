@@ -277,15 +277,18 @@ class XplentyClient(object):
 
         return json.loads(resp.read())
 
-    def get(self, url):
-        logger.debug("GET {}".format(url))
-        
+    
+    def post(self, url, data_dict={}):
+        logger.debug('POST {}, data {}'.format(url, data_dict))
+
         try:
-            resp = requests.get(url, headers=HEADERS, params=self.params)
+            resp = requests.post(url, data=data_dict, headers=HEADERS, params=self.params)
         except resp.raise_for_status() as error:
             raise XplentyAPIException(error)
+        
+        return resp.json()
 
-        return resp.content.json()
+
         
 
     def _post(self, url, data_dict={}):
@@ -304,6 +307,12 @@ class XplentyClient(object):
         return json.loads(resp.read())
 
     def delete(self, url):
+        logger.debug("DELETE {}".format(url))
+
+        try:
+            resp = requests.po
+
+    def _delete(self, url):
         logger.debug("DELETE %s", url)
         request = RequestWithMethod(url, 'DELETE', headers=HEADERS)
         base64string = base64.encodebytes(bytes(self.api_key, 'utf-8')).replace(b'\n', b'')
